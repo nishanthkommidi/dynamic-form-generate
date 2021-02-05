@@ -1,0 +1,49 @@
+<ng-container *ngIf="!showQuestionnaire">
+	<form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" novalidate>
+		<ng-container *ngFor="let controls of fields">
+			{{controls.label}}
+			<input [type]="controls.type" [formControlName]="controls.label" />
+			<ng-container *ngFor="let validation of controls.validations">
+				<span
+					*ngIf="dynamicForm.controls[controls.label].touched && dynamicForm.controls[controls.label].errors">
+					<p *ngIf="dynamicForm.controls[controls.label].errors[validation.name]">
+						{{validation.message}}
+					</p>
+				</span>
+			</ng-container>
+			<br>
+		</ng-container>
+		<br>
+		<input type="submit" [disabled]="!dynamicForm.valid" />
+	</form>
+</ng-container>
+<ng-container *ngIf="showQuestionnaire">
+	<h1>HL7 FHIR Test</h1>
+	<ng-container *ngFor="let item of questionnaireData.item;let indx = index">
+		{{indx + 1}}. {{item.text}} <span *ngIf="item.type === 'group'"> :--</span><br>
+		<ng-container *ngIf="item.type === 'boolean'">
+			<input type="radio" name="{{index}}" value="yes"> Yes<br>
+			<input type="radio" name="{{index}}" value="no"> No<br>
+		</ng-container><br>
+		<ng-container *ngIf="item.type === 'group'">
+			<ng-container *ngFor="let groupItem of item.item;let groupIndx = index">
+				<div [ngClass]="{'date-cont':groupItem.type === 'date'}">
+					{{indx + 1}}.{{groupIndx + 1}}. {{groupItem.text}}
+					<ng-container *ngIf="groupItem.type === 'string'">
+						<select name="{{groupIndx + 1}}" id="{{groupIndx + 1}}" style="height: 20px;">
+							<option *ngFor="let optItem of groupItem.options">{{optItem.value}}</option>
+						</select>
+					</ng-container><br>
+					<ng-container *ngIf="groupItem.type === 'boolean'">
+						<input type="radio" name="{{groupIndx}}" value="yes"> Yes<br>
+						<input type="radio" name="{{groupIndx}}" value="no"> No<br>
+					</ng-container><br>
+					<ng-container *ngIf="groupItem.type === 'date'">
+						<input type="date" id="birthday" name="birthday" style="height: 20px;width: 130px;">
+					</ng-container><br>
+				</div>
+			</ng-container>
+		</ng-container>
+	</ng-container>
+	<button type="submit" form="form1" value="Submit">Submit</button>
+</ng-container>
