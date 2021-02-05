@@ -6,7 +6,11 @@
 			<ng-container *ngFor="let validation of controls.validations">
 				<span
 					*ngIf="dynamicForm.controls[controls.label].touched && dynamicForm.controls[controls.label].errors">
-					<p *ngIf="dynamicForm.controls[controls.label].errors[validation.name]">
+					<p *ngIf="dynamicForm.controls[controls.label].errors?.required">
+						{{validation.message}}
+					</p>
+
+					<p *ngIf="dynamicForm.controls[controls.label].errors?.pattern">
 						{{validation.message}}
 					</p>
 				</span>
@@ -22,8 +26,8 @@
 	<ng-container *ngFor="let item of questionnaireData.item;let indx = index">
 		{{indx + 1}}. {{item.text}} <span *ngIf="item.type === 'group'"> :--</span><br>
 		<ng-container *ngIf="item.type === 'boolean'">
-			<input type="radio" name="{{index}}" value="yes"> Yes<br>
-			<input type="radio" name="{{index}}" value="no"> No<br>
+			<input type="radio" name="{{indx}}" value="yes"> Yes<br>
+			<input type="radio" name="{{indx}}" value="no"> No<br>
 		</ng-container><br>
 		<ng-container *ngIf="item.type === 'group'">
 			<ng-container *ngFor="let groupItem of item.item;let groupIndx = index">

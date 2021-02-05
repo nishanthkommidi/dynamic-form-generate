@@ -51,7 +51,8 @@ export class AppComponent {
       ]
     }
   ];
-  dynamicForm: FormGroup;
+  
+  public dynamicForm: FormGroup;
   showQuestionnaire = false;
 
   constructor(private http: HttpClient, private handler: HttpBackend) {
@@ -61,9 +62,9 @@ export class AppComponent {
     });
     // this.questionnaireData = this.http.get('./assets/questionnaire.json'); // questionnaireJson;
    
-    const controls = {};
+    const controls:any = {};
     this.fields.forEach(res => {
-      const validationsArray = [];
+      const validationsArray:any = [];
       res.validations.forEach(val => {
         if (val.name === 'required') {
           validationsArray.push(Validators.required);
